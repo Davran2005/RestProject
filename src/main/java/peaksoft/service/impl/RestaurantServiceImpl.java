@@ -9,7 +9,7 @@ import peaksoft.dto.restoran.RestaurantRequest;
 import peaksoft.dto.restoran.RestaurantResponse;
 import peaksoft.entity.Restaurant;
 import peaksoft.entity.User;
-import peaksoft.exception.BadRequestException;
+import peaksoft.exception.AlreadyExistException;
 import peaksoft.exception.NotFoundException;
 import peaksoft.repository.RestaurantRepository;
 import peaksoft.repository.UserRepository;
@@ -27,31 +27,32 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public SimpleResponse saveRestaurant(RestaurantRequest restaurantRequest) {
 
-        int countRestaurant = getAllRestaurant().size();
-        if (countRestaurant < 1) {
-            Restaurant restaurant = new Restaurant();
-            restaurant.setName(restaurantRequest.getName());
-            restaurant.setLocation(restaurantRequest.getLocation());
-            restaurant.setRestaurantType(restaurantRequest.getRestaurantType());
-            restaurant.setServices(restaurantRequest.getServices());
-            restaurantRepository.save(restaurant);
-                throw new BadRequestException("When saving the restaurant, one of the columns remained empty");
-            } else {
-                String email = SecurityContextHolder.getContext().getAuthentication().getName();
-                User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User with email: %s not found".formatted(email)));
-                Restaurant restaurant = new Restaurant();
-                if (restaurant.getUsers().size()<15) {
-                    restaurant.setNumberOfEmployees(restaurant.getUsers().size() + 1);
-                }else {
-                    throw new BadRequestException("Сотрудник больше 15 нельзя");
-                }
-                restaurantRepository.save(restaurant);
-                user.setRestaurant(restaurant);
-                return SimpleResponse.builder()
-                        .status(HttpStatus.OK)
-                        .message("Успешно")
-                        .build();
-            }
+        if (!restaurantRepository.findAll().isEmpty()) {
+            throw new AlreadyExistException("You mast save only 1 Restaurant");
+        }
+        if (restaurantRepository.existsByName(restaurantRequest.getName())) {
+            return SimpleResponse.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .message(String.format("Restaurant with name : %s already exists", restaurantRequest.getName()))
+                    .build();
+        }
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.getUserByEmail(email)
+                .orElseThrow(() -> new NotFoundException("User with email: %s not found".formatted(email)));
+        Restaurant restaurant = Restaurant.builder()
+                .name(restaurantRequest.getName())
+                .location(restaurantRequest.getLocation())
+                .restType(restaurantRequest.getRestaurantType())
+                .service(restaurantRequest.getServices())
+                .build();
+        restaurantRepository.save(restaurant);
+        user.setRestaurant(restaurant);
+        userRepository.save(user);
+        return SimpleResponse.builder()
+                .status(HttpStatus.OK)
+                .message(String.format("Restaurant with name: %s successfully saved!",
+                        restaurantRequest.getName()))
+                .build();
         }
 
 
@@ -68,8 +69,8 @@ public class RestaurantServiceImpl implements RestaurantService {
                 .id(restaurant.getId())
                 .name(restaurant.getName())
                 .location(restaurant.getLocation())
-                .restaurantType(restaurant.getRestaurantType())
-                .services(restaurant.getServices())
+                .restaurantType(restaurant.getRestType())
+                .services(restaurant.getService())
                 .build();
     }
 
@@ -99,8 +100,8 @@ public class RestaurantServiceImpl implements RestaurantService {
                         ("There is no restaurant with this Id %s", id)));
         restaurant.setName(restaurantRequest.getName());
         restaurant.setLocation(restaurantRequest.getLocation());
-        restaurant.setRestaurantType(restaurantRequest.getRestaurantType());
-        restaurant.setServices(restaurantRequest.getServices());
+        restaurant.setRestType(restaurantRequest.getRestaurantType());
+        restaurant.setService(restaurantRequest.getServices());
         restaurantRepository.save(restaurant);
         return SimpleResponse.builder()
                 .status(HttpStatus.OK)

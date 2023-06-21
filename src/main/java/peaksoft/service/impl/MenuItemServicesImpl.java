@@ -6,17 +6,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import peaksoft.dto.SimpleResponse;
-import peaksoft.dto.cheque.ChequePaginationResponse;
-import peaksoft.dto.cheque.ChequeResponse;
 import peaksoft.dto.menuItmen.MenuItemRequest;
 import peaksoft.dto.menuItmen.MenuItemResponse;
 import peaksoft.dto.menuItmen.MenuPaginationResponse;
 import peaksoft.entity.MenuItem;
 import peaksoft.entity.Restaurant;
-import peaksoft.entity.Subcategory;
+
+import peaksoft.entity.SubCategory;
 import peaksoft.exception.NotFoundException;
 import peaksoft.repository.MenuItemRepository;
 import peaksoft.repository.RestaurantRepository;
@@ -35,7 +33,7 @@ public class MenuItemServicesImpl implements MenuItemServices {
 
     public SimpleResponse save(Long restaurantId, Long subCategoryId, MenuItemRequest menuItemRequest) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(() -> new NotFoundException(String.format("Restaurant with id: " + restaurantId + "is not found")));
-        Subcategory subCategory = subCategoryRepository.findById(subCategoryId).orElseThrow(() -> new NotFoundException(String.format("SubCategory with id: " + subCategoryId +"is not found" )));
+        SubCategory subCategory = subCategoryRepository.findById(subCategoryId).orElseThrow(() -> new NotFoundException(String.format("SubCategory with id: " + subCategoryId +"is not found" )));
         MenuItem menuItem = new MenuItem();
         menuItem.setName(menuItemRequest.getName());
         menuItem.setDescription(menuItemRequest.getDescription());
@@ -43,7 +41,7 @@ public class MenuItemServicesImpl implements MenuItemServices {
         menuItem.setImage(menuItemRequest.getImage());
         menuItem.setRestaurant(restaurant);
         menuItem.setSubCategory(subCategory);
-        menuItem.setIsVegetarian(menuItemRequest.getIsVegetarian());
+        menuItem.setVegetarian(menuItemRequest.getIsVegetarian());
         repository.save(menuItem);
         return SimpleResponse.builder()
                 .status(HttpStatus.OK)
@@ -59,7 +57,7 @@ public class MenuItemServicesImpl implements MenuItemServices {
         menuItem.setImage(request.getImage());
         menuItem.setPrice(request.getPrice());
         menuItem.setDescription(request.getDescription());
-        menuItem.setIsVegetarian(request .getIsVegetarian());
+        menuItem.setVegetarian(request .getIsVegetarian());
         repository.save(menuItem);
         return SimpleResponse.builder()
                 .status(HttpStatus.OK)
@@ -110,7 +108,7 @@ public class MenuItemServicesImpl implements MenuItemServices {
                 .image(menuItem.getImage())
                 .price(menuItem.getPrice())
                 .description(menuItem.getDescription())
-                .isVegetarian(menuItem.getIsVegetarian())
+                .isVegetarian(menuItem.isVegetarian())
                 .build());
     }
 
@@ -129,7 +127,7 @@ public class MenuItemServicesImpl implements MenuItemServices {
                 .image(menuItem.getImage())
                 .price(menuItem.getPrice())
                 .description(menuItem.getDescription())
-                .isVegetarian(menuItem.getIsVegetarian())
+                .isVegetarian(menuItem.isVegetarian())
                 .build());
     }
 }

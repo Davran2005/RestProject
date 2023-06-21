@@ -1,17 +1,12 @@
 package peaksoft.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import peaksoft.dto.SimpleResponse;
 import peaksoft.dto.WaiterRequest;
 import peaksoft.dto.WaiterResponseOfDay;
-import peaksoft.dto.cheque.ChequePaginationResponse;
 import peaksoft.dto.cheque.ChequeRequest;
 import peaksoft.dto.cheque.ChequeResponse;
 import peaksoft.entity.Cheque;
@@ -73,7 +68,7 @@ public class ChequeServiceImpl implements ChequeService {
                 .id(cheque.getId())
                 .fullName(cheque.getUser().getFirstName() + " " + cheque.getUser().getLastName())
                 .itemResponseList(cheque.getMenuItems())
-                .services(restaurant.getServices())
+                .services(restaurant.getService())
                 .avaPrice(cheque.getPriceAverage())
                 .grandTotal((int) (cheque.getPriceAverage() * 0.15))
                 .build();

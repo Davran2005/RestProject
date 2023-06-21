@@ -1,7 +1,6 @@
 package peaksoft.dto.stopList;
 
 import lombok.*;
-import peaksoft.dto.restoran.RestaurantResponse;
 
 import java.util.List;
 @Setter

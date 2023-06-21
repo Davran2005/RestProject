@@ -1,10 +1,6 @@
 package peaksoft.dto.subcategory;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.websocket.server.ServerEndpoint;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
 @Builder
 

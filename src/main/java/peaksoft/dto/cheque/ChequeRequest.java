@@ -3,7 +3,6 @@ package peaksoft.dto.cheque;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import peaksoft.entity.MenuItem;
 
 import java.util.List;
 

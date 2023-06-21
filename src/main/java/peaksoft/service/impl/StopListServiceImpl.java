@@ -8,20 +8,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import peaksoft.dto.SimpleResponse;
-import peaksoft.dto.cheque.ChequePaginationResponse;
-import peaksoft.dto.cheque.ChequeResponse;
 import peaksoft.dto.stopList.StopListPaginationResponse;
 import peaksoft.dto.stopList.StopListRequest;
 import peaksoft.dto.stopList.StopListResponse;
 import peaksoft.entity.MenuItem;
 import peaksoft.entity.StopList;
-import peaksoft.exception.AlreadyExistException;
 import peaksoft.exception.NotFoundException;
 import peaksoft.repository.MenuItemRepository;
 import peaksoft.repository.StopListRepository;
 import peaksoft.service.StopListService;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

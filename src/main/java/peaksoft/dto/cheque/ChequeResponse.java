@@ -3,10 +3,8 @@ package peaksoft.dto.cheque;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import peaksoft.dto.menuItmen.MenuItemResponse;
 import peaksoft.entity.MenuItem;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Builder

@@ -1,7 +1,6 @@
 package peaksoft.dto.menuItmen;
 
 import lombok.*;
-import peaksoft.dto.cheque.ChequeResponse;
 
 import java.util.List;
 @Setter

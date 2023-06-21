@@ -1,35 +1,28 @@
 package peaksoft.service.impl;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import peaksoft.config.JwtServices;
+import peaksoft.config.JWTService;
 import peaksoft.dto.Authentication.AuthenticationResponse;
 import peaksoft.dto.Authentication.SignInRequest;
-import peaksoft.dto.Authentication.SignUpRequest;
 import peaksoft.entity.User;
 import peaksoft.enums.Role;
-import peaksoft.exception.BadRequestException;
-import peaksoft.exception.NotFoundException;
 import peaksoft.repository.UserRepository;
 import peaksoft.service.AuthenticationService;
 
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZonedDateTime;
-import java.util.Scanner;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
-    private final JwtServices jwtService;
+    private final JWTService jwtService;
     private final PasswordEncoder passwordEncoder;
 
 

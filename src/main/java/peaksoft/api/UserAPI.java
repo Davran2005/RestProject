@@ -1,5 +1,6 @@
 package peaksoft.api;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
@@ -18,12 +19,13 @@ public class UserAPI {
     private final UserService service;
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Operation
     public SimpleResponse save(@Valid @RequestBody UserRequest userRequest) {
         return service.saveUser(userRequest);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','WAITER','CHEF')")
-    @GetMapping("/page")
+    @GetMapping("/getAll")
     UserPaginationResponse getAllUsers(@RequestParam int pageSize, int currentPage){
         return service.getAllUser(currentPage,pageSize);
     }
@@ -31,23 +33,23 @@ public class UserAPI {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/ass/{userId}/{restaurantId}")
-    public  SimpleResponse Ass(@PathVariable Long userId, @PathVariable Long restaurantId,  @Param("word") String word){
+    public  SimpleResponse Ass(@PathVariable Long userId, @PathVariable Long restaurantId,  @RequestParam(required = false, defaultValue = "add") String word){
         return service.assign(userId, restaurantId, word);
     }
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("{id}")
+    @PutMapping("/update/{id}")
     public SimpleResponse updateUser(@PathVariable Long id,@RequestBody UserRequest userRequest){
         return service.updateUser(id, userRequest);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','WAITER','CHEF')")
-    @GetMapping("{id}")
+    @GetMapping("/getById/{id}")
     public UserResponse getUserById(@PathVariable Long id){
         return service.getUserById(id);
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN','WAITER','CHEF')")
-    @DeleteMapping("{id}")
+    @DeleteMapping("/delete/{id}")
     public SimpleResponse deleteUserById(@PathVariable Long id){
         return service.deleteUser(id);
     }

@@ -1,7 +1,6 @@
 package peaksoft.dto.user;
 
 import lombok.*;
-import peaksoft.dto.subcategory.SubcategoryResponse;
 
 import java.util.List;
 @Getter

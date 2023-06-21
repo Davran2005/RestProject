@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import peaksoft.entity.User;
-import peaksoft.exceptions.NotFoundException;
+import peaksoft.exception.NotFoundException;
+
 import peaksoft.repository.UserRepository;
 
 import java.io.IOException;

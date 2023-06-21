@@ -1,12 +1,11 @@
 package peaksoft.service;
 
-import peaksoft.dto.AdminTokenRequest;
-import peaksoft.dto.AuthenticationResponse;
-import peaksoft.dto.SignInRequest;
+
+import peaksoft.dto.Authentication.AuthenticationResponse;
+import peaksoft.dto.Authentication.SignInRequest;
 
 public interface AuthenticationService {
 
-    AuthenticationResponse getAdminToken(AdminTokenRequest adminTokenRequest);
     AuthenticationResponse signIn(SignInRequest signInRequest);
 
 }
