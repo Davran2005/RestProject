@@ -26,7 +26,7 @@ public class MenuItem {
     private Restaurant restaurant;
     @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     private List<Cheque> cheques;
-    @OneToOne(mappedBy = "menuItem",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.REMOVE})
+    @OneToOne(mappedBy = "menuItem",cascade = {CascadeType.ALL})
     private StopList stopList;
 
     @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})

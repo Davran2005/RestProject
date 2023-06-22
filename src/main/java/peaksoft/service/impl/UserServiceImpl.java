@@ -160,6 +160,8 @@ public class UserServiceImpl implements UserService {
     public SimpleResponse assign(Long userId, Long resId, String word) {
         Restaurant restaurant = restaurantRepository.findById(resId).orElseThrow(() -> new NotFoundException("Restaurant with id: " + resId + " is not found!"));
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User with id: " + userId + " is not found!"));
+        if (restaurant.getUsers().size()<15) {
+            restaurant.setNumberOfEmployees(restaurant.getUsers().size() + 1);
         if (word.equalsIgnoreCase("add")) {
             restaurant.getUsers().add(user);
             restaurantRepository.save(restaurant);
@@ -169,6 +171,10 @@ public class UserServiceImpl implements UserService {
                     .status(HttpStatus.OK)
                     .message("Успешно добавили ")
                     .build();
+        }
+        }
+        else {
+            throw new BadRequestException("Сотрудник больше 15 нельзя");
         }
         if (word.equalsIgnoreCase("do not add")) {
             userRepository.delete(user);

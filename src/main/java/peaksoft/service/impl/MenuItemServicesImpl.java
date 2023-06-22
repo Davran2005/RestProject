@@ -40,6 +40,7 @@ public class MenuItemServicesImpl implements MenuItemServices {
         menuItem.setPrice(menuItemRequest.getPrice());
         menuItem.setImage(menuItemRequest.getImage());
         menuItem.setRestaurant(restaurant);
+
         menuItem.setSubCategory(subCategory);
         menuItem.setVegetarian(menuItemRequest.getIsVegetarian());
         repository.save(menuItem);
@@ -52,12 +53,12 @@ public class MenuItemServicesImpl implements MenuItemServices {
 
     @Override
     public SimpleResponse update(Long id, MenuItemRequest request) {
-        MenuItem menuItem = new MenuItem();
+        MenuItem menuItem = repository.findById(id).orElseThrow(() -> new NotFoundException(String.format("Menu whit id: " + id + "is not found")));
         menuItem.setName(request.getName());
-        menuItem.setImage(request.getImage());
-        menuItem.setPrice(request.getPrice());
         menuItem.setDescription(request.getDescription());
-        menuItem.setVegetarian(request .getIsVegetarian());
+        menuItem.setPrice(request.getPrice());
+        menuItem.setImage(request.getImage());
+        menuItem.setVegetarian(request.getIsVegetarian());
         repository.save(menuItem);
         return SimpleResponse.builder()
                 .status(HttpStatus.OK)
@@ -84,50 +85,19 @@ public class MenuItemServicesImpl implements MenuItemServices {
     }
 
     @Override
-    public MenuPaginationResponse getAllResponse(int size, int page) {
-        Pageable pageable = PageRequest.of(page-1, size, Sort.by("name"));
-        Page<MenuItemResponse> allMenu = repository.getAllResponse(pageable);
+    public MenuPaginationResponse getAllResponse(int size, int page,String ascOrDesc) {
+        Pageable pageable = PageRequest.of(page-1, size);
+        Page<MenuItemResponse> allMenu = repository.getAll(ascOrDesc,pageable);
         return MenuPaginationResponse.builder()
                 .menuItemResponses(allMenu.getContent())
                 .currentPage(allMenu.getNumber()+1)
                 .pageSize(allMenu.getTotalPages())
                 .build();
     }
-    @Override
-    public List<MenuItemResponse> getAllOrder(String descOrAsc) {
-        if (descOrAsc.equals("Asc")) {
-            repository.getAsc();
-        }
-        if (descOrAsc.equals("Desc")){
-            repository.getDesc();
-        }
-        MenuItem  menuItem = new MenuItem();
-        return Collections.singletonList(MenuItemResponse.builder()
-                .id(menuItem.getId())
-                .name(menuItem.getName())
-                .image(menuItem.getImage())
-                .price(menuItem.getPrice())
-                .description(menuItem.getDescription())
-                .isVegetarian(menuItem.isVegetarian())
-                .build());
-    }
+
 
     @Override
     public List<MenuItemResponse> getAllVega(Boolean vegOrNot) {
-        if (vegOrNot.equals(true)){
-            repository.getAllTrue();
-        }
-        if (vegOrNot.equals(false)) {
-            repository.getAllFalse();
-        }
-        MenuItem  menuItem = new MenuItem();
-        return Collections.singletonList(MenuItemResponse.builder()
-                .id(menuItem.getId())
-                .name(menuItem.getName())
-                .image(menuItem.getImage())
-                .price(menuItem.getPrice())
-                .description(menuItem.getDescription())
-                .isVegetarian(menuItem.isVegetarian())
-                .build());
+        return repository.getAllTrue(vegOrNot);
     }
 }

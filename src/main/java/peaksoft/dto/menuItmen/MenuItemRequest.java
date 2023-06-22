@@ -13,14 +13,15 @@ public class MenuItemRequest {
     private int price;
     private String description;
     private Boolean isVegetarian;
-    private Long subcategoryId;
 
-    public MenuItemRequest(String name, String image, int price, String description, Boolean isVegetarian, Long subcategoryId) {
+    public MenuItemRequest(String name, String image, int price, String description, Boolean isVegetarian) {
         this.name = name;
         this.image = image;
         this.price = price;
         this.description = description;
         this.isVegetarian = isVegetarian;
-        this.subcategoryId = subcategoryId;
+    }
+
+    public MenuItemRequest() {
     }
 }

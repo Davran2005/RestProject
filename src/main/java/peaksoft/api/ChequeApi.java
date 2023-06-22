@@ -41,6 +41,8 @@ public class ChequeApi {
     public SimpleResponse delete(@PathVariable Long id){
         return chequeServices.delete(id);
     }
-
-
+@GetMapping("/total/{id}")
+    public ChequeResponse totalDaily(@PathVariable Long id){
+        return chequeServices.totalDaily(id);
+    }
 }

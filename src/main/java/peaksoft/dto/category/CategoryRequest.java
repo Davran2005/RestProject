@@ -13,4 +13,7 @@ public class CategoryRequest {
     public CategoryRequest(String name) {
         this.name = name;
     }
+
+    public CategoryRequest() {
+    }
 }

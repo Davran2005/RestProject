@@ -26,7 +26,7 @@ public class StopListServiceImpl  implements StopListService {
 
     @Override
     public StopListPaginationResponse getAllStopLists(int size, int page) {
-        Pageable pageable = PageRequest.of(page-1, size, Sort.by("name"));
+        Pageable pageable = PageRequest.of(page-1, size);
         Page<StopListResponse> allStopList = stopListRepository.getAllStopLists(pageable);
         return StopListPaginationResponse.builder()
                 .stopListResponses(allStopList.getContent())
@@ -38,7 +38,7 @@ public class StopListServiceImpl  implements StopListService {
     @Override
     public SimpleResponse saveStopList(Long menuItemId, StopListRequest stopListRequest) {
         MenuItem menu = menuItemRepository.findById(menuItemId).orElseThrow(
-                () -> new NullPointerException("Menu with id: "));
+                () -> new NullPointerException("Menu with id: "+menuItemId + "is not found"));
         StopList stopList=new StopList();
         stopList.setReason(stopListRequest.getReason());
         stopList.setDate(stopListRequest.getDate());

@@ -2,6 +2,7 @@ package peaksoft.dto.cheque;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
+@NoArgsConstructor
 public class ChequeRequest{
        private int priceAverage;
        private List<Long>menuItems;

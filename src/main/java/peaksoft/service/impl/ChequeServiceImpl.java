@@ -40,6 +40,7 @@ public class ChequeServiceImpl implements ChequeService {
         List<MenuItem> menuItems = new ArrayList<>();
         Cheque cheque = Cheque
                 .builder()
+                .priceAverage(request.getPriceAverage())
                 .user(user)
                 .menuItems(menuItems)
                 .createdAt(LocalDate.from(ZonedDateTime.now()))

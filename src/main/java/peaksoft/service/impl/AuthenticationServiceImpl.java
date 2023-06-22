@@ -4,7 +4,6 @@ import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import peaksoft.config.JWTService;
@@ -12,6 +11,7 @@ import peaksoft.dto.Authentication.AuthenticationResponse;
 import peaksoft.dto.Authentication.SignInRequest;
 import peaksoft.entity.User;
 import peaksoft.enums.Role;
+import peaksoft.exception.BadCredentialException;
 import peaksoft.repository.UserRepository;
 import peaksoft.service.AuthenticationService;
 
@@ -33,16 +33,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         );
 
         if (signInRequest.getPassword().isBlank()) {
-            throw new BadCredentialsException("Password is blank");
+            throw new BadCredentialException("Password is blank");
         }
 
         if (!passwordEncoder.matches(signInRequest.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Wrong password!");
+            throw new BadCredentialException("Wrong password!");
         }
 
+        String token = jwtService.generateToken(user);
         return AuthenticationResponse
                 .builder()
-                .token(jwtService.generateToken(user))
+                .token(token)
                 .email(user.getEmail())
                 .role(user.getRole().name())
                 .build();

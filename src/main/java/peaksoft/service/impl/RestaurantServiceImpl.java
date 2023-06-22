@@ -10,6 +10,7 @@ import peaksoft.dto.restoran.RestaurantResponse;
 import peaksoft.entity.Restaurant;
 import peaksoft.entity.User;
 import peaksoft.exception.AlreadyExistException;
+import peaksoft.exception.BadRequestException;
 import peaksoft.exception.NotFoundException;
 import peaksoft.repository.RestaurantRepository;
 import peaksoft.repository.UserRepository;
@@ -39,13 +40,14 @@ public class RestaurantServiceImpl implements RestaurantService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.getUserByEmail(email)
                 .orElseThrow(() -> new NotFoundException("User with email: %s not found".formatted(email)));
-        Restaurant restaurant = Restaurant.builder()
+        Restaurant restaurant = user.getRestaurant();
+        Restaurant restaurant2 = Restaurant.builder()
                 .name(restaurantRequest.getName())
                 .location(restaurantRequest.getLocation())
                 .restType(restaurantRequest.getRestaurantType())
                 .service(restaurantRequest.getServices())
                 .build();
-        restaurantRepository.save(restaurant);
+        restaurantRepository.save(restaurant2);
         user.setRestaurant(restaurant);
         userRepository.save(user);
         return SimpleResponse.builder()

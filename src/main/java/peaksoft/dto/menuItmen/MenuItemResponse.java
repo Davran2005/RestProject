@@ -23,4 +23,7 @@ public class MenuItemResponse {
         this.description = description;
         this.isVegetarian = isVegetarian;
     }
+
+    public MenuItemResponse() {
+    }
 }

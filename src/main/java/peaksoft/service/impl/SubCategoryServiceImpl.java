@@ -87,24 +87,10 @@ public class SubCategoryServiceImpl implements SubCategoryService {
                 .build();
     }
 
-    @Override
-    public SubcategoryResponse filterSubCategoryByCategory(String categoryName) {
-        return subcategoryRepository.SubCategoryByCategory(categoryName);
+    public List<SubcategoryResponse> getAllSubCategoryOrderByCategoryName(Long categoryId, String ascOrDesc) {
+        return subcategoryRepository.getAllSubCategoryOrderByCategoryName(categoryId, ascOrDesc);
     }
 
-    @Override
-    public List<SubcategoryResponse> sort(String ascOrDesc) {
-        if (ascOrDesc.equalsIgnoreCase("Asc")) {
-            subcategoryRepository.sortAsc();
-        }
-        if (ascOrDesc.equalsIgnoreCase("Desc")) {
-            subcategoryRepository.sortDesc();
-        }
-        SubCategory subcategory = new SubCategory();
-        return Collections.singletonList(SubcategoryResponse.builder()
-                .name(subcategory.getName())
-                .build());
-    }
 
     @Override
     public SubCategoryPaginationResponse getAllSubCategoryByGroup(int size, int page) {

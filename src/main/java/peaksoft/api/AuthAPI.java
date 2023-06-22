@@ -2,6 +2,7 @@ package peaksoft.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +15,14 @@ import peaksoft.service.AuthenticationService;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthAPI {
+
     private final AuthenticationService authenticationService;
 
    @PostMapping("/signIn")
    @Operation(summary = "token",description = "signIn")
    public AuthenticationResponse signIn(@RequestBody SignInRequest signInRequest){
+
+       System.out.println("in api");
         return authenticationService.signIn(signInRequest);
    }
 }

@@ -21,8 +21,8 @@ import java.util.List;
 @Builder
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(generator = "user_gen",strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "user_gen",sequenceName = "user_seq", allocationSize = 1)
+    @GeneratedValue(generator = "user_gen", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "user_gen", sequenceName = "user_seq", allocationSize = 1)
     private Long id;
 
     private String firstName;
@@ -37,9 +37,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private int experience;
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     private Restaurant restaurant;
-    @OneToMany(mappedBy = "user",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH,CascadeType.REMOVE})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
     private List<Cheque> cheques;
 
     public User(String firstName, String lastName, LocalDate dateOfBirth, String email, String password, String phoneNumber, Role role, int experience) {
@@ -59,12 +59,13 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
-        return email;
-    }
-    @Override
     public String getPassword() {
-        return password;
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
     @Override
@@ -86,4 +87,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

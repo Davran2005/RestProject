@@ -12,9 +12,11 @@ import peaksoft.dto.category.CategoryPaginationResponse;
 import peaksoft.dto.category.CategoryRequest;
 import peaksoft.dto.category.CategoryResponse;
 import peaksoft.entity.Category;
+import peaksoft.entity.Restaurant;
 import peaksoft.exception.BadRequestException;
 import peaksoft.exception.NotFoundException;
 import peaksoft.repository.CategoryRepository;
+import peaksoft.repository.RestaurantRepository;
 import peaksoft.service.CategoryService;
 
 import java.util.List;
@@ -23,24 +25,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Override
     public SimpleResponse saveCategory(CategoryRequest request) {
-        List<Category> categories = categoryRepository.findAll().stream().filter(category -> category.getName().equalsIgnoreCase(request.getName())).toList();
         Category category = new Category();
-        if (categories.size() == 0) {
-            if (category.getName().equalsIgnoreCase(request.getName())) {
-                throw new BadRequestException("There are categories with this name");
-            } else {
-                categoryRepository.save(category);
-                return SimpleResponse.builder()
-                        .status(HttpStatus.OK)
-                        .message("Успешно")
-                        .build();
-            }
-        } else {
-            throw new BadRequestException("Can't be name is 0");
-        }
+        category.setName(request.getName());
+        categoryRepository.save(category);
+        return SimpleResponse.builder()
+                .status(HttpStatus.OK)
+                .message("Successfully saved")
+                .build();
+
     }
 
     public CategoryPaginationResponse getAllCategory(int size, int page) {
@@ -78,9 +74,7 @@ public class CategoryServiceImpl implements CategoryService {
     public SimpleResponse update(Long id, CategoryRequest request) {
         Category category = categoryRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format("Category with id: " + id + "is not found")));
-        if (category.getName().equalsIgnoreCase(request.getName())) {
-            throw new BadRequestException("There are categories with this name");
-        } else {
+     category.setName(request.getName());
             categoryRepository.save(category);
             return SimpleResponse.builder()
                     .status(HttpStatus.OK)
@@ -88,5 +82,5 @@ public class CategoryServiceImpl implements CategoryService {
                     .build();
         }
     }
-}
+
 

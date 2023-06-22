@@ -19,6 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 @Query("select new peaksoft.dto.user.UserResponse(u.id,u.firstName,u.lastName,u.dateOfBirth,u.email,u.phoneNumber,u.role,u.experience) from User u where u.id = :id")
     Optional<UserResponse> findByIdUser(Long id);
 
+    @Query("select u from User u where u.email = :email")
     Optional<User> getUserByEmail(String email);
 
 

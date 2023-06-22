@@ -13,8 +13,7 @@ public interface SubCategoryService {
     SimpleResponse delete(Long id);
     SubCategoryPaginationResponse getAll(int size, int page);
     SimpleResponse update(Long id,SubcategoryRequest request);
-    SubcategoryResponse filterSubCategoryByCategory(String categoryName);
-    List<SubcategoryResponse> sort(String ascOrDesc);
+    public List<SubcategoryResponse> getAllSubCategoryOrderByCategoryName(Long categoryId, String ascOrDesc);
     SubCategoryPaginationResponse getAllSubCategoryByGroup(int size, int page);
     List<SubcategoryResponse> searchByName(String word);
 }

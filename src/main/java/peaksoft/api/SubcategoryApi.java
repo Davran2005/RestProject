@@ -47,11 +47,10 @@ public class SubcategoryApi {
         return subcategoryServices.update(id, request);
     }
     @PreAuthorize("hasAnyAuthority('ADMIN','CHEF','WAITER')")
-    @GetMapping("/filterSubCategoryByCategoryName")
-    public SubcategoryResponse filterSubCategoryByCategoryName(@RequestParam String name){
-        return subcategoryServices.filterSubCategoryByCategory(name);
+    @GetMapping("/filter/{categoryId}")
+public List<SubcategoryResponse> filterAndSort(@PathVariable Long categoryId, @RequestParam(required = false) String ascOrDesc){
+        return subcategoryServices.getAllSubCategoryOrderByCategoryName(categoryId,ascOrDesc);
     }
-
     @PreAuthorize("hasAnyAuthority('ADMIN','CHEF','WAITER')")
     @GetMapping("/byGroup")
     public SubCategoryPaginationResponse getSubCategoryByGroup(@RequestParam int currentPage , @RequestParam int pageSize){

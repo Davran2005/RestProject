@@ -16,9 +16,8 @@ public interface MenuItemServices {
 
     SimpleResponse delete(Long id);
 
-    MenuPaginationResponse getAllResponse(int size, int page);
+    MenuPaginationResponse getAllResponse(int size, int page, String ascOrDesc);
 
-    List<MenuItemResponse> getAllOrder(String descOrAsc);
 
     List<MenuItemResponse> getAllVega(Boolean vegOrNot);
 

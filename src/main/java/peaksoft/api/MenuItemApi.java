@@ -19,7 +19,7 @@ public class MenuItemApi {
     private final MenuItemServices menuItemServices;
     @PostMapping("/save/{restaurantId}/{subCategoryId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public SimpleResponse save(@PathVariable("restaurantId") Long restaurantId, @PathVariable("subCategoryId") Long subCategoryId,@RequestBody MenuItemRequest request){
+    public SimpleResponse save(@PathVariable("restaurantId") Long restaurantId, @PathVariable("subCategoryId") Long subCategoryId, @RequestBody MenuItemRequest request){
         return menuItemServices.save(restaurantId,subCategoryId,request);
     }
 
@@ -35,16 +35,12 @@ public class MenuItemApi {
         return menuItemServices.delete(id);
     }
 
-    @GetMapping("/getAllOrder/{descOrAsc}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','WAITER')")
-    public List<MenuItemResponse> getAllOrder(@PathVariable String descOrAsc){
-        return menuItemServices.getAllOrder(descOrAsc);
-    }
 
-    @GetMapping("/getAllVega/{descOrAsc}")
+
+    @GetMapping("/getAllVega")
     @PreAuthorize("hasAnyAuthority('ADMIN','WAITER','CHEF')")
-    public List<MenuItemResponse> getAllVega(@PathVariable Boolean descOrAsc){
-        return menuItemServices.getAllVega(descOrAsc);
+    public List<MenuItemResponse> getAllVega(@RequestParam(required = false) Boolean trueOrFalse){
+        return menuItemServices.getAllVega(trueOrFalse);
     }
 
     @GetMapping("/update/{id}")
@@ -52,10 +48,9 @@ public class MenuItemApi {
     public SimpleResponse update(@PathVariable Long id,@RequestBody MenuItemRequest request) {
         return menuItemServices.update(id, request);
     }
-
     @PreAuthorize("hasAnyAuthority('ADMIN','CHEF','WAITER')")
     @GetMapping("/getAll")
-    public MenuPaginationResponse getAllMenuItems(@RequestParam int currentPage, @RequestParam  int pageSize){
-        return menuItemServices.getAllResponse( currentPage, pageSize);
+    public MenuPaginationResponse getAllMenuItems(@RequestParam int currentPage, @RequestParam  int pageSize, @RequestParam String ascOrDesc ) {
+        return menuItemServices.getAllResponse( currentPage, pageSize,ascOrDesc );
     }
 }
